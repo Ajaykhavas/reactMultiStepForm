@@ -10,12 +10,37 @@ import {
 } from "@mui/material";
 import { Controller } from "react-hook-form";
 import { STEP_FORM_LABELS, STEP_FORM_ERRORS } from "../../constants/Constants";
+import CustomDatePicker from "../CommonComponents/CommonDatePicker ";
 
 const PlanSelection = ({ control, formData, price }) => {
   return (
-    <Box sx={{ display: "flex", flexDirection: "column", gap: 3, width: "100%" }}>
+    <Box
+      sx={{ display: "flex", flexDirection: "column", gap: 3, width: "100%" }}
+    >
+      <FormControl>
+        <FormLabel component="legend">
+          {STEP_FORM_LABELS.STEP_3.START_DATE}
+        </FormLabel>
+        <Controller
+          name="startDate"
+          control={control}
+          defaultValue={formData?.step3?.startDate || null}
+          rules={{ required: STEP_FORM_ERRORS.STEP_3.START_DATE_REQUIRED }}
+          render={({ field, fieldState }) => (
+            <CustomDatePicker
+              label="Select Date"
+              value={field.value}
+              onChange={field.onChange}
+              error={!!fieldState.error}
+              helperText={fieldState.error ? fieldState.error.message : null}
+            />
+          )}
+        />
+      </FormControl>
       <FormControl component="fieldset">
-        <FormLabel component="legend">{STEP_FORM_LABELS.STEP_3.PLAN_TYPE}</FormLabel>
+        <FormLabel component="legend">
+          {STEP_FORM_LABELS.STEP_3.PLAN_TYPE}
+        </FormLabel>
         <Controller
           name="plan"
           control={control}
@@ -37,7 +62,6 @@ const PlanSelection = ({ control, formData, price }) => {
           )}
         />
       </FormControl>
-
       <Box marginTop={2}>
         <Typography variant="h6">Order Summary</Typography>
         <Typography variant="body1">Selected Plan Price: ${price}</Typography>
